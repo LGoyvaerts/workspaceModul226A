@@ -1,3 +1,9 @@
+package tasks.cluedo;
+
+import tasks.cluedo.model.Person;
+import tasks.cluedo.model.Raum;
+import tasks.cluedo.model.Tatwaffe;
+
 import java.util.Random;
 import java.util.Scanner;
 
@@ -42,67 +48,88 @@ public class CluedoGame {
         Tatwaffe[] tatwaffen = cluedoGame.tatwaffen();
         Raum[] raume = cluedoGame.raume();
 
-        System.out.println("Krimi Cluedo\\n");
+        System.out.println("Krimi Cluedo\n");
 
-        int pCounter=0;
-        int tCounter=0;
-        int rCounter=0;
+        int pCounter = 0;
+        int tCounter = 0;
+        int rCounter = 0;
 
 
         for (Person p : personen) {
-            System.out.println(pCounter+": "+p.getAnrede() + " " + p.getName() + ", " + p.getKopfverzierung() + ", " + p.getAlter() + " Jahre alt, " + p.getGroesse() + "m, " + p.getMerkmal() + ", " + p.getBeruf());
+            System.out.println(pCounter + ": " + p.getAnrede() + " " + p.getName() + ", " + p.getKopfverzierung() + ", " + p.getAlter() + " Jahre alt, " + p.getGroesse() + "m, " + p.getMerkmal() + ", " + p.getBeruf());
             pCounter++;
         }
         System.out.println("");
 
         for (Tatwaffe t : tatwaffen) {
-            System.out.println(tCounter+": "+t.getBezeichnung() + ", " + t.getMerkmal() + ", " + t.getGewicht() + "g, " + t.getLaenge() + "cm " + t.getMaterial() + ", " + t.getFarbe());
+            System.out.println(tCounter + ": " + t.getBezeichnung() + ", " + t.getMerkmal() + ", " + t.getGewicht() + "g, " + t.getLaenge() + "cm " + t.getMaterial() + ", " + t.getFarbe());
             tCounter++;
         }
         System.out.println("");
 
         for (Raum r : raume) {
-            System.out.println(rCounter+": "+r.getBezeichnung()+", Masse: "+r.getLaenge()+"*"+r.getBreite()+" = "+r.getFlaeche()+", "+r.getHoehe()+"m hoch, "+r.getAnzFenster()+" Fenster, "+r.getAnzTueren()+" Türen");
+            System.out.println(rCounter + ": " + r.getBezeichnung() + ", Masse: " + r.getLaenge() + "*" + r.getBreite() + " = " + r.getFlaeche() + ", " + r.getHoehe() + "m hoch, " + r.getAnzFenster() + " Fenster, " + r.getAnzTueren() + " Türen");
             rCounter++;
         }
 
-        while(true) {
+        while (true) {
 
-            int rightOnes=0;
+            int rightOnes = 0;
 
             System.out.print("\nIhre Eingabe: ");
             String[] guess = in.nextLine().split("\\s+");
-            Integer one = Integer.parseInt(guess[0]);
-            Integer two = Integer.parseInt(guess[1]);
-            Integer three = Integer.parseInt(guess[2]);
 
-            if (one == personStelle){
-                rightOnes++;
+            try {
+
+
+                Integer one = Integer.parseInt(guess[0]);
+                Integer two = Integer.parseInt(guess[1]);
+                Integer three = Integer.parseInt(guess[2]);
+
+                if (CluedoGame.inRange(one, 6) && CluedoGame.inRange(two, 6) && CluedoGame.inRange(three, 8)) {
+
+                    if (one == personStelle) {
+                        rightOnes++;
+                    }
+
+                    if (two == tatwaffeStelle) {
+                        rightOnes++;
+                    }
+
+                    if (three == raumStelle) {
+                        rightOnes++;
+                    }
+
+                    if (rightOnes == 3) {
+                        System.out.println("\nGewonnen!");
+                        System.exit(0);
+                    }
+
+                    System.out.println("\nRichtig: " + rightOnes);
+
+                    guesses--;
+
+                    if (guesses == 0) {
+                        System.out.println("\nVerloren");
+                        System.exit(0);
+                    }
+                } else {
+                    System.out.println("Falsche Eingabe!");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("\nBuchstaben eingegeben!");
+            } finally {
+                in.close();
             }
 
-            if (two == tatwaffeStelle){
-                rightOnes++;
-            }
-
-            if (three == raumStelle){
-                rightOnes++;
-            }
-
-            if (rightOnes==3){
-                System.out.println("Gewonnen!");
-                System.exit(0);
-            }
-
-            System.out.println("\nRichtig: "+rightOnes);
-
-            guesses--;
-
-            if (guesses==0){
-                System.out.println("Verloren");
-                System.exit(0);
-            }
         }
 
+
+    }
+
+    private static Boolean inRange(Integer input, int range) {
+
+        return input >= 1 && input <= range;
 
     }
 

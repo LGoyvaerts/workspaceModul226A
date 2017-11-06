@@ -1,5 +1,4 @@
-import java.awt.*;
-import java.util.Date;
+package tasks.cluedo.model;
 
 public class Person {
 

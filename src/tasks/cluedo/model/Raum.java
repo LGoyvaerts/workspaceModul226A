@@ -1,3 +1,5 @@
+package tasks.cluedo.model;
+
 public class Raum {
 
     private String bezeichnung;

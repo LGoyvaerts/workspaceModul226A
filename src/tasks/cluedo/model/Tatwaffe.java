@@ -1,3 +1,5 @@
+package tasks.cluedo.model;
+
 public class Tatwaffe {
 
     private String bezeichnung;
